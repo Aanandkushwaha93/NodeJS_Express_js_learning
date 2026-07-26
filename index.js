@@ -33,3 +33,24 @@
 //     resp.send(submit())
 // })
 // app.listen(2200)
+import express from 'express';
+import path from 'path';
+const app = express();
+const absPath = path.resolve('view');
+const publicPath = path.resolve('public/css')
+
+app.use(express.static(publicPath));
+console.log(publicPath) 
+app.get('/', (req, resp) => {
+    resp.sendFile(absPath + '/home.html')
+})
+app.get('/login', (req, resp) => {
+    resp.sendFile(absPath + '/login.html')
+})
+app.post('/about', (req, resp) => {
+    resp.sendFile(absPath + '/about.html')
+})
+app.use((req, resp) => {
+    resp.sendFile(absPath + '/404.html')
+})
+app.listen(8900);   
