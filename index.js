@@ -1,30 +1,29 @@
 import express from 'express';
 const app = express();
-// function check(req, resp, next) {
-//     if (!req.query.age || req.query.age < 18) {
-//         resp.send("<h1>You are not eligible</h1>")
-//     } else {
-//         next();
-//     }
-// }
-function ipCheck(req,resp,next) {
-    const ip  = req.socket.remoteAddress;
-    console.log(ip)
-    if(ip.includes('10.238.212.19')){
-        resp.send('You can not access this page')
+
+function checkAgeRouteMiddleware(req,resp,next) {
+    if(!req.query.age||req.query.age<18){
+        console.log(req.query.age)
+        resp.send('You are not allowed to this site')
     }else{
         next()
     }
 }
-// app.use(check)
-app.use(ipCheck)
+function checkUrlRouteMiddleware(req,resp,next) {
+    console.log('This is Url checker',req.url)
+    next();
+}
+
 app.get('/', (req, resp) => {
-    resp.send("<h1>This is home page</h1>")
+    resp.send('<h1>Home page</h1>')
 })
-app.get('/user', (req, resp) => {
-    resp.send("<h1>This is user page</h1>")
+app.get('/login', (req, resp) => {
+    resp.send('<h1>Login page</h1>')
 })
-app.get('/admin', (req, resp) => {
-    resp.send("<h1>This is user page</h1>")
+app.get('/user',checkAgeRouteMiddleware,checkUrlRouteMiddleware, (req, resp) => {
+    resp.send('<h1>User page</h1>')
 })
-app.listen(2200)
+app.get('/products',checkAgeRouteMiddleware,checkUrlRouteMiddleware, (req, resp) => {
+    resp.send('<h1>Product page</h1>')
+})
+app.listen(2500);
