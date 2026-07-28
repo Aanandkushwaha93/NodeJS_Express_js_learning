@@ -12,6 +12,10 @@ app.get('/login', (req, resp) => {
     resp.render('addUser')
 })
 app.post('/submit-user', (req, resp) => {
-    resp.render('SubmitUser',req.body)
+    resp.render('SubmitUser', req.body)
+})
+app.get('/users', (req, resp) => {
+    const users = ['power', 'success', 'money'];
+    resp.render('users', { users: users ,isLogin:false});
 })
 app.listen(4500);
