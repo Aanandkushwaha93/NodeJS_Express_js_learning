@@ -1,6 +1,17 @@
-import express from "express";
-import { usercontroller } from "./controller/userController.js";
+import express from 'express';
 const app = express();
-app.set('view engine', 'ejs')
-app.get('/users', usercontroller)
-app.listen(3900)
+app.get('', (req, resp) => {
+    const users = ['Power', 'Success', 'Money']
+    let data = `<ul>`;
+    for (let i = 0; i < users.length; i++) {
+        data += `<li><a href="user/${users[i]}">${users[i]}</a></li>`
+        console.log(users[i])
+    }
+    data += `</ul>`
+    resp.send(data);
+})
+app.get('/user/:name', (req, resp) => {
+    const userName = req.params.name;
+    resp.send(`This is ${userName}'s profile page`)
+})
+app.listen(3200);
