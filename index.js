@@ -1,12 +1,12 @@
 import express from 'express';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 const dbName = "school";
 const url = 'mongodb://localhost:27017';
 const client = new MongoClient(url);
 const app = express();
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
-
+app.use(express.json());
 client.connect().then((connection) => {
     const db = connection.db(dbName);
     app.get('/api', async (req, resp) => {
@@ -28,6 +28,42 @@ client.connect().then((connection) => {
         const result = await collection.insertOne(req.body);
         console.log(result);
         resp.send('data saved');
+    })
+    app.post('/add-student-api', async (req, resp) => {
+        const { name, age, email } = req.body;
+        if (!name || !age || !email) {
+            resp.send({ message: "Operation Failed", success: false })
+            return false;
+        }
+        const collection = db.collection('student');
+        const result = await collection.insertOne(req.body)
+        resp.send({ message: "data stored", success: true, result: result });
+    })
+    app.delete('/delete/:id', async (req, resp) => {
+        console.log(req.params.id);
+        const collection = db.collection('student');
+        const result = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+        if (result) {
+            resp.send({
+                message: "Student data deleted",
+                success: true
+            })
+        } else {
+            resp.send({
+                message: 'Student data not deleted, try after sometime',
+                success: false
+            })
+        }
+    })
+    app.get('/ui/delete/:id', async (req, resp) => {
+        console.log(req.params.id);
+        const collection = db.collection('student');
+        const result = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+        if (result) {
+            resp.send('<h1>Student data deleted</h1>')
+        } else {
+            resp.send('<h1>Student data not deleted</h1>')
+        }
     })
 })
 

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <h1>Student data is here</h1>
     <table border="1">
@@ -12,14 +14,25 @@
             <td>Name</td>
             <td>Age</td>
             <td>Email</td>
+            <td>Operation</td>
         </tr>
         <% students.forEach(student=>{ %>
-      <tr>
-          <td><%= student.name %></td>
-        <td><%= student.age %></td>
-        <td><%= student.email %></td>
-      </tr>
-        <% })%>
+            <tr>
+                <td>
+                    <%= student.name %>
+                </td>
+                <td>
+                    <%= student.age %>
+                </td>
+                <td>
+                    <%= student.email %>
+                </td>
+                  <td>
+                   <a href="/ui/delete/<%= student._id %>">DELETE</a>
+                </td>
+            </tr>
+            <% })%>
     </table>
 </body>
+
 </html>
