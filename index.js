@@ -64,6 +64,25 @@ client.connect().then((connection) => {
         } else {
             resp.send('<h1>Student data not deleted</h1>')
         }
+    });
+    app.get('/ui/update/:id', async (req, resp) => {
+        const collection = db.collection('student');
+        const result = await collection.findOne({ _id: new ObjectId(req.params.id) });
+        // console.log(result)
+        resp.render('update-student', { result });
+    })
+    app.post('/ui/update/:id', (req, resp) => {
+        //    console.log(req.params.id);
+        console.log(req.body)
+        const collection = db.collection('student');
+        const filter = { _id: new ObjectId(req.params.id) };
+        const update = { $set: req.body }
+        const result = collection.updateOne(filter, update)
+       if(result){
+         resp.send("Data update successfuly",result);
+       }else{
+         resp.send("Data not update please try again some time");
+       }
     })
 })
 
