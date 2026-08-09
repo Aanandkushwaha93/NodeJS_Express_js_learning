@@ -8,7 +8,7 @@ const app = express();
 async function dbConnection() {
     await client.connect();
     const db = client.db(dbName);
-    const collection = db.collection('student');
+    const collection = db.collection('students');
     const result = await collection.find().toArray()
     console.log(result)
 }
