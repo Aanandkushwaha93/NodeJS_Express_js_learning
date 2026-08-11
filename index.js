@@ -1,29 +1,16 @@
-import express from 'express';
-import multer from 'multer';
-
-const app = express();
-const storage = multer.diskStorage({
-    destination:function (req,file,cb){
-        cb(null,'upload')
-    },
-    filename:function (req,file,cb){
-        cb(null,file.originalname)
-    }
-})
-const upload = multer({storage});
-app.get('/', (req, resp) => {
-    resp.send(`
-        <form action='/upload' method='post' enctype='multipart/form-data'>
-        <input type='file' name='myfile' />
-        <button> Upload File</button>
-        </form>
-        `)
-})
-app.post('/upload', upload.single('myfile'),  (req, resp)=> {
-    resp.send({
-        message:'File uploaded',
-        success:true,
-        info:req.file
-    })
-})
-app.listen(2200)
+import express from "express";
+import { MongoClient } from "mongodb";
+const url = 'mongodb+srv://aanandkushwaha:c0x7GONPVhTKh9to@cluster0.alfcauh.mongodb.net/?appName=Cluster0';
+const database = 'school';
+const collection = 'student';
+const client = new MongoClient(url);
+client.connect().then(()=>[
+    console.log('.......connect.......')
+])
+async function dbConnection() {
+    const db = client.db(database);
+    const collectionResult = db.collection(collection);
+    const result = await collectionResult.find().toArray();
+    console.log(result);    
+}
+dbConnection();
