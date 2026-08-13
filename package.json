@@ -13,6 +13,7 @@
     "cors": "^2.8.6",
     "ejs": "^6.0.1",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "mongodb": "^7.5.0",
     "mongoose": "^9.9.1",
     "multer": "^2.2.0",
