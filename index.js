@@ -11,8 +11,13 @@ app.get('/login', (req, resp) => {
     resp.render('login')
 })
 app.post('/profile', (req, resp) => {
-    req.session.data = resp.data;
+    req.session.data = req.body;
     console.log(req.session.data);
     resp.render('profile')
+});
+app.get('/', (req, resp) => {
+    const data = req.session.data;
+    console.log(data)
+    resp.render('home', { data });
 })
 app.listen(2200);
